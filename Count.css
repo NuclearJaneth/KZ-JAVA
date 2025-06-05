@@ -1,0 +1,23 @@
+.nav-icons sl-icon[data-count]::after {
+    content: attr(data-count);
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background-color: var(--secondary-color);
+    color: white;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    font-size: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.nav-icons sl-icon {
+    position: relative;
+}
+
+.nav-icons sl-icon[data-count="0"]::after {
+    display: none;
+}

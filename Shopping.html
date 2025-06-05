@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KicksZone - Shopping Cart</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.0.0/dist/themes/light.css">
+    <script type="module" src="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.0.0/dist/shoelace.js"></script>
+    <style>
+        /* Estilos generales */
+        :root {
+            --primary-color: rgb(58, 55, 55);
+            --secondary-color: rgb(122, 168, 122);
+            --dark-color: #1a1a1a;
+            --light-color: #f8f9fa;
+            --gray-color: #6c757d;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--light-color);
+            color: var(--dark-color);
+        }
+        
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+        
+        /* Banner de ofertas */
+        .offer-banner {
+            background-color: var(--secondary-color);
+            color: white;
+            padding: 0.5rem;
+            text-align: center;
+            font-weight: bold;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+        
+        .offer-text {
+            display: inline-block;
+            padding-left: 100%;
+            animation: scroll 20s linear infinite;
+        }
+        
+        @keyframes scroll {
+            from { transform: translateX(0); }
+            to { transform: translateX(-100%); }
+        }
+        
+        /* Header */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .brand {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--primary-color);
+            cursor: pointer;
+        }
+        
+        .brand span {
+            color: var(--secondary-color);
+        }
+        
+        .nav-menu {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+        }
+        
+        .nav-menu a {
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        .nav-menu a:hover {
+            color: var(--secondary-color);
+        }
+        
+        .nav-icons {
+            display: flex;
+            gap: 1rem;
+            margin-left: 2rem;
+        }
+        
+        .nav-icons sl-icon {
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+        
+        .nav-icons sl-icon:hover {
+            color: var(--secondary-color);
+        }
+         .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        
+        /* Shopping Cart Section */
+        .cart-container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+        
+        .cart-title {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            color: var(--primary-color);
+        }
+        
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            border-bottom: 1px solid var(--gray-color);
+        }
+        
+        .cart-item img {
+            width: 100px;
+            height: auto;
+            object-fit: cover;
+            margin-right: 1rem;
+        }
+        
+        .cart-item-info {
+            flex-grow: 1;
+        }
+        
+        .cart-item-title {
+            font-weight: bold;
+        }
+        
+        .cart-item-price {
+            color: var(--secondary-color);
+            font-weight: bold;
+        }
+        
+        .cart-total {
+            text-align: right;
+            font-size: 1.5rem;
+            margin-top: 1rem;
+            font-weight: bold;
+        }
+        
+        /* Footer */
+        footer {
+            background-color:  rgb(122, 168, 122);
+            color: white;
+            padding: 3rem 2rem;
+            margin-top: 3rem;
+        }
+        
+        .footer-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .footer-brand {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: white;
+            margin-bottom: 1rem;
+        }
+        
+        .footer-brand span {
+            color: var(--secondary-color);
+        }
+        
+        .footer-contact p {
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .footer-form sl-input, .footer-form sl-textarea {
+            margin-bottom: 1rem;
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            margin-top: 2rem;
+            border-top: 1px solid var(--gray-color);
+        }
+          /* Responsive */
+        @media (max-width: 768px) {
+            .nav-menu {
+                position: fixed;
+                top: 80px;
+                left: -100%;
+                width: 80%;
+                height: calc(100vh - 80px);
+                background: white;
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 2rem;
+                box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+                transition: left 0.3s;
+                z-index: 99;
+            }
+            
+            .nav-menu.active {
+                left: 0;
+            }
+            
+            .nav-icons {
+                margin-left: auto;
+            }
+            
+            .menu-toggle {
+                display: block;
+            }
+            
+            .products-grid {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            }
+            
+            .brands-grid {
+                grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            }
+        }
+        
+        @media (max-width: 480px) {
+            header {
+                padding: 1rem;
+            }
+            
+            .products-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 1rem;
+                padding: 0 1rem;
+            }
+            
+            .brands-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 1rem;
+                padding: 0 1rem;
+            }
+            
+            .footer-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Banner de ofertas -->
+    <div class="offer-banner">
+        <div class="offer-text">
+             🚀 SPECIAL OFFER: 30% DISSCOUNT ON ALL SNEAKER - LIMITED TIME ONLY 🚀 • 🎁 FREE SHIPPING ON SHPS OVER A $100 🎁 • 🔥 NEW MODELS AVALIBLE - RESERV YOUR NOW 🔥
+        </div>
+    </div>
+    
+    <!-- Header -->
+    <header>
+        <a href="index.html" class="brand">KICK<span>ZONE</span></a>
+        <button class="menu-toggle" id="menuToggle">
+            <sl-icon name="list"></sl-icon>
+        </button>
+        <nav class="nav-menu" id="navMenu">
+            <a href="NewArrivals.html">New Arrivals</a>
+            <a href="Sneakers.html">Sneakers</a>
+            <a href="streetwear.html">Streetwear</a>
+            <a href="Accesories.html">Accessories</a>
+            
+            <div class="nav-icons">
+                <sl-icon name="person"></sl-icon>
+                <sl-icon name="cart" data-count="0"></sl-icon>
+            </div>
+        </nav>
+    </header>
+    
+    <!-- Shopping Cart Section -->
+    <div class="cart-container">
+        <h1 class="cart-title">Your shopping cart</h1>
+        
+        <!-- Example Cart Items -->
+        <div class="cart-item">
+            <img src="New arrivals/Arrivals 1.jpeg" alt="Air Jordan 1">
+            <div class="cart-item-info">
+                <div class="cart-item-title">Air Jordan retro low</div>
+                <div class="cart-item-price">$1,999.99</div>
+            </div>
+            <sl-button variant="neutral">Delete</sl-button>
+        </div>
+        
+        <div class="cart-item">
+            <img src="Tenis/NB 1.jpeg" alt="New Balance 530">
+            <div class="cart-item-info">
+                <div class="cart-item-title">New Balance 530</div>
+                <div class="cart-item-price">$2,990.99</div>
+            </div>
+            <sl-button variant="neutral">Delete</sl-button>
+        </div>
+        
+        <div class="cart-total">Total: $4,990.98</div>
+    </div>
+    
+    <!-- Footer -->
+    <footer>
+        <div class="footer-container">
+            <div class="footer-about">
+                <a href="index.html" class="brand"><div class="footer-brand">KicksZone</div></a>
+                <p>The most exclusive and trendy store where you can buy</p>
+            </div>
+            
+            <div class="footer-contact">
+                <h3>Contacto</h3>
+                <p><sl-icon name="geo-alt"></sl-icon> Calle Sneaker 123, Ciudad Moda</p>
+                <p><sl-icon name="telephone"></sl-icon> +1 234 567 890</p>
+                <p><sl-icon name="envelope"></sl-icon> info@kickszone.com</p>
+                <p><sl-icon name="clock"></sl-icon> Lunes a Viernes: 9am - 7pm</p>
+            </div>
+            
+            <div class="footer-form">
+                <h3>Subscribe</h3>
+                <p>Recive the most exclusive offers.</p>
+                <form>
+                    <sl-input type="text" placeholder="Nombre" required></sl-input>
+                    <sl-input type="email" placeholder="Email" required></sl-input>
+                    <sl-textarea placeholder="Mensaje"></sl-textarea>
+                    <sl-button type="submit" variant="neutral">Send</sl-button>
+                </form>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>&copy; 2025 KicksZone. All rights reserved.</p>
+        </div>
+    </footer>
+    
+    <script>
+       // Función para cargar el carrito
+    function loadCart() {
+        const cart = JSON.parse(localStorage.getItem('cart')) || [];
+        const cartContainer = document.querySelector('.cart-container');
+        
+        // Limpiar contenedor manteniendo el título
+        cartContainer.innerHTML = '<h1 class="cart-title">Your shopping cart</h1>';
+        
+        if (cart.length === 0) {
+            cartContainer.innerHTML += '<p>Your cart is empty.</p>';
+            return;
+        }
+        
+        // Crear elementos para cada producto
+        cart.forEach((item, index) => {
+            const cartItem = document.createElement('div');
+            cartItem.className = 'cart-item';
+            
+            cartItem.innerHTML = `
+                ${item.image ? `<img src="${item.image}" alt="${item.title}" onerror="this.style.display='none'">` : ''}
+                <div class="cart-item-info">
+                    <div class="cart-item-title">${item.title}</div>
+                    <div class="cart-item-price">${item.price}</div>
+                </div>
+                <sl-button variant="neutral" onclick="removeFromCart(${index})">Delete</sl-button>
+            `;
+            
+            cartContainer.appendChild(cartItem);
+        });
+        
+        // Calcular total
+        const total = cart.reduce((sum, item) => {
+            const price = parseFloat(item.price.replace(/[^\d.-]/g, '')) || 0;
+            return sum + price;
+        }, 0);
+        
+        const totalElement = document.createElement('div');
+        totalElement.className = 'cart-total';
+        totalElement.textContent = `Total: $${total.toFixed(2)}`;
+        cartContainer.appendChild(totalElement);
+    }
+    
+    // Función para eliminar del carrito
+    function removeFromCart(index) {
+        const cart = JSON.parse(localStorage.getItem('cart')) || [];
+        if (index >= 0 && index < cart.length) {
+            cart.splice(index, 1);
+            localStorage.setItem('cart', JSON.stringify(cart));
+            loadCart();
+            
+            // Actualizar el contador en todas las páginas
+            const event = new Event('cartUpdated');
+            document.dispatchEvent(event);
+        }
+    }
+    
+    // Inicialización
+    document.addEventListener('DOMContentLoaded', function() {
+        loadCart();
+    });
+        // Actualizaciones del carrito
+        document.addEventListener('cartUpdated', function() {
+            loadCart();
+        });
+        
+       // Menú hamburguesa
+        menuToggle = document.getElementById('menuToggle');
+        navMenu = document.getElementById('navMenu');
+        
+        menuToggle.addEventListener('click', () => {
+            navMenu.classList.toggle('active');
+        });
+    </script>
+</body>
+</html>

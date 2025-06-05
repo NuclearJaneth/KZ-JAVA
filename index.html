@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KicksZone - Sneakers & Streetwear</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.0.0-beta.83/dist/themes/light.css">
+    <script type="module" src="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.0.0-beta.83/dist/shoelace.js"></script>
+    <link rel="stylesheet" href="Count.css">
+    <style>
+        /* Estilos generales */
+        :root {
+            --primary-color: rgb(58, 55, 55);
+            --secondary-color: rgb(122, 168, 122);
+            --dark-color: #1a1a1a;
+            --light-color: #f8f9fa;
+            --gray-color: #6c757d;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--light-color);
+            color: var(--dark-color);
+        }
+        
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+        
+        /* Banner de ofertas */
+        .offer-banner {
+            background-color: var(--secondary-color);
+            color: white;
+            padding: 0.5rem;
+            text-align: center;
+            font-weight: bold;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+        
+        .offer-text {
+            display: inline-block;
+            padding-left: 100%;
+            animation: scroll 20s linear infinite;
+        }
+        
+        @keyframes scroll {
+            from { transform: translateX(0); }
+            to { transform: translateX(-100%); }
+        }
+        
+        /* Header */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .brand {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--primary-color);
+            cursor: pointer;
+        }
+        
+        .brand span {
+            color: var(--secondary-color);
+        }
+        
+        .nav-menu {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+        }
+        
+        .nav-menu a {
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        .nav-menu a:hover {
+            color: var(--secondary-color);
+        }
+        
+        .nav-icons {
+            display: flex;
+            gap: 1rem;
+            margin-left: 2rem;
+        }
+        
+        .nav-icons sl-icon {
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+        
+        .nav-icons sl-icon:hover {
+            color: var(--secondary-color);
+        }
+        
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        
+        /* Carrusel */
+        .carousel-container {
+            margin: 1rem auto;
+            max-width: 1200px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .carousel {
+            display: flex;
+            transition: transform 0.5s ease;
+        }
+        
+        .carousel-slide {
+            min-width: 100%;
+        }
+        
+        .carousel-slide img {
+            width: 100%;
+            display: block;
+        }
+        
+        /* Sección de productos */
+        .section-title {
+            text-align: center;
+            margin: 2rem 0;
+            font-size: 2rem;
+            color: var(--primary-color);
+        }
+        
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 2rem;
+            padding: 0 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .product-card {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .product-image {
+            height: 200px;
+            overflow: hidden;
+        }
+        
+        .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s;
+        }
+        
+        .product-card:hover .product-image img {
+            transform: scale(1.05);
+        }
+        
+        .product-info {
+            padding: 1rem;
+        }
+        
+        .product-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        
+        .product-price {
+            color: var(--secondary-color);
+            font-weight: bold;
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+        }
+        
+        .product-button {
+            width: 100%;
+        }
+        
+        /* Marcas */
+        .brands-section {
+            margin: 3rem 0;
+        }
+        
+        .brands-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 1.5rem;
+            padding: 0 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .brand-card {
+            background: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+            cursor: pointer;
+        }
+        
+        .brand-card:hover {
+            transform: scale(1.05);
+        }
+        
+        .brand-card img {
+            max-width: 100%;
+            max-height: 50px;
+            filter: grayscale(100%);
+            transition: filter 0.3s;
+        }
+        
+        .brand-card:hover img {
+            filter: grayscale(0%);
+        }
+        
+        /* Footer */
+        footer {
+            background-color:  rgb(122, 168, 122);
+            color: white;
+            padding: 3rem 2rem;
+            margin-top: 3rem;
+        }
+        
+        .footer-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .footer-brand {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: white;
+            margin-bottom: 1rem;
+        }
+        
+        .footer-brand span {
+            color: var(--secondary-color);
+        }
+        
+        .footer-contact p {
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .footer-form sl-input, .footer-form sl-textarea {
+            margin-bottom: 1rem;
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            margin-top: 2rem;
+            border-top: 1px solid var(--gray-color);
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-menu {
+                position: fixed;
+                top: 80px;
+                left: -100%;
+                width: 80%;
+                height: calc(100vh - 80px);
+                background: white;
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 2rem;
+                box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+                transition: left 0.3s;
+                z-index: 99;
+            }
+            
+            .nav-menu.active {
+                left: 0;
+            }
+            
+            .nav-icons {
+                margin-left: auto;
+            }
+            
+            .menu-toggle {
+                display: block;
+            }
+            
+            .products-grid {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            }
+            
+            .brands-grid {
+                grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            }
+        }
+        
+        @media (max-width: 480px) {
+            header {
+                padding: 1rem;
+            }
+            
+            .products-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 1rem;
+                padding: 0 1rem;
+            }
+            
+            .brands-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 1rem;
+                padding: 0 1rem;
+            }
+            
+            .footer-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Banner de ofertas -->
+    <div class="offer-banner">
+        <div class="offer-text">
+            🚀 SPECIAL OFFER: 30% DISSCOUNT ON ALL SNEAKER - LIMITED TIME ONLY 🚀 • 🎁 FREE SHIPPING ON SHPS OVER A $100 🎁 • 🔥 NEW MODELS AVALIBLE - RESERV YOUR NOW 🔥
+        </div>
+    </div>
+    
+    <!-- Header -->
+    <header>
+        
+        <a href="index.html" class="brand">KICK<span>ZONE</span></a>
+        
+        <button class="menu-toggle" id="menuToggle">
+            <sl-icon name="list"></sl-icon>
+        </button>
+        
+        <nav class="nav-menu" id="navMenu">
+            <a href="NewArrivals.html">New Arrivals</a>
+            <a href="Sneakers.html">Sneakers</a>
+            <a href="streetwear.html">Streetwear</a>
+            <a href="Accesories.html">Accessories</a>
+            
+            <div class="nav-icons">
+                <sl-icon name="person"></sl-icon>
+                <a href="Shopping.html"><sl-icon name="cart" data-count="0"></sl-icon></a>
+            </div>
+        </nav>
+    </header>
+    
+    <!-- Carrusel -->
+    <div class="carousel-container">
+        <div class="carousel" id="carousel">
+            <div class="carousel-slide">
+                <img src="Carrusel/carrusel 1.jpeg" alt="Sneakers Collection">
+            </div>
+            <div class="carousel-slide">
+                <img src="Carrusel/Carrusel 2.jpeg" alt="Limited Edition">
+            </div>
+            <div class="carousel-slide">
+                <img src="Carrusel/Carrusel 3.jpeg" alt="Streetwear Style">
+            </div>
+        </div>
+    </div>
+    
+    <!-- Productos destacados -->
+    <h1 class="section-title">Bestseller</h1>
+    <div class="products-grid">
+        <div class="product-card">
+            <div class="product-image">
+                <img src="New arrivals/Arrivals 1.jpeg" alt="Air Jordan 1">
+            </div>
+            <div class="product-info">
+                <h3 class="product-title">Air Jordan retro low</h3>
+                <p class="product-price">$1,999.99</p>
+                <sl-button variant="neutral" class="product-button">Add to Cart</sl-button>
+            </div>
+        </div>
+        
+        <div class="product-card">
+            <div class="product-image">
+                <img src="Tenis/NB 1.jpeg">
+            </div>
+            <div class="product-info">
+                <h3 class="product-title">New Balance 530</h3>
+                <p class="product-price">$2,990.99</p>
+                <sl-button variant="neutral" class="product-button">Add to Cart</sl-button>
+            </div>
+        </div>
+        
+        <div class="product-card">
+            <div class="product-image">
+                <img src="Streetwear/Essential hoodie 2.jpeg" alt="Adidas Superstar">
+            </div>
+            <div class="product-info">
+                <h3 class="product-title">Essentials hoodie</h3>
+                <p class="product-price">$2,099.99</p>
+                <sl-button variant="neutral" class="product-button">Add to Cart</sl-button>
+            </div>
+        </div>
+        
+        <div class="product-card">
+            <div class="product-image">
+                <img src="Accesorios/Pulsera 1.jpeg" alt="Puma RS-X">
+            </div>
+            <div class="product-info">
+                <h3 class="product-title">Carier nail bracelete</h3>
+                <p class="product-price">$19,919.99</p>
+                <sl-button variant="neutral" class="product-button">Add to Cart</sl-button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Comprar por marca -->
+    <div class="brands-section">
+        <h2 class="section-title">Shop by Brand</h2>
+        <div class="brands-grid">
+            <div class="brand-card">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/Logo_NIKE.svg/1200px-Logo_NIKE.svg.png" alt="Nike">
+            </div>
+            <div class="brand-card">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/20/Adidas_Logo.svg/2560px-Adidas_Logo.svg.png" alt="Adidas">
+            </div>
+            <div class="brand-card">
+                <img src="https://th.bing.com/th/id/R.b37bf719a0579692841d1b15ba99199e?rik=KJqlm%2b%2fJPs7QGQ&riu=http%3a%2f%2flofrev.net%2fwp-content%2fphotos%2f2016%2f06%2fpuma-logo-1-1.jpg&ehk=nQJkwEjVBfLmoRK2H6jFLTeoo9R%2fqJnlSjHV69f5E%2fE%3d&risl=&pid=ImgRaw&r=0" alt="Puma">
+            </div>
+            <div class="brand-card">
+                <img src="https://th.bing.com/th/id/OIP.Jra3VBScWvk5t3IyESg6GQHaG6?rs=1&pid=ImgDetMain" alt="Jordan">
+            </div>
+            <div class="brand-card">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Reebok_2019_logo.svg/1200px-Reebok_2019_logo.svg.png" alt="Reebok">
+            </div>
+            <div class="brand-card">
+                <img src="https://th.bing.com/th/id/R.f2e81d77e6bab803f5e51cdbc3598979?rik=qLkPtF8q0FUgmA&riu=http%3a%2f%2flogos-download.com%2fwp-content%2fuploads%2f2016%2f02%2fNew_Balance_black_logo.png&ehk=NmFgfldj0bnkYB0pO%2f8NHF7FdM7ZdEFhFXF95PLPldM%3d&risl=&pid=ImgRaw&r=0" alt="New Balance">
+            </div>
+        </div>
+    </div>
+    
+    <!-- Footer -->
+    <footer>
+        <div class="footer-container">
+            <div class="footer-about">
+                <a href="index.html" class="brand"><div class="footer-brand">KicksZone</div></a>
+                <p>The most exclusive and trendy store where you can buy</p>
+            </div>
+            
+            <div class="footer-contact">
+                <h3>Contacto</h3>
+                <p><sl-icon name="geo-alt"></sl-icon> Calle Sneaker 123, Ciudad Moda</p>
+                <p><sl-icon name="telephone"></sl-icon> +1 234 567 890</p>
+                <p><sl-icon name="envelope"></sl-icon> info@kickszone.com</p>
+                <p><sl-icon name="clock"></sl-icon> Lunes a Viernes: 9am - 7pm</p>
+            </div>
+            
+            <div class="footer-form">
+                <h3>Subscribe</h3>
+                <p>Recive the most exclusive offers .</p>
+                <form>
+                    <sl-input type="text" placeholder="Nombre" required></sl-input>
+                    <sl-input type="email" placeholder="Email" required></sl-input>
+                    <sl-textarea placeholder="Mensaje"></sl-textarea>
+                    <sl-button type="submit" variant="neutral">Send</sl-button>
+                </form>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>&copy; 2025 KicksZone. All rights reserved.</p>
+        </div>
+    </footer>
+    
+    <script>
+        
+        // Función para actualizar el carrito en todas las páginas
+    function updateCartCount() {
+        const cart = JSON.parse(localStorage.getItem('cart')) || [];
+        const cartIcons = document.querySelectorAll('.nav-icons sl-icon[name="cart"]');
+        
+        cartIcons.forEach(icon => {
+            const countBadge = icon.shadowRoot.querySelector('.cart-badge') || 
+                              document.createElement('span');
+            countBadge.className = 'cart-badge';
+            countBadge.textContent = cart.length > 0 ? cart.length : '';
+            
+            // Solo añadir si no existe
+            if (!icon.shadowRoot.querySelector('.cart-badge')) {
+                const style = document.createElement('style');
+                style.textContent = `
+                    .cart-badge {
+                        position: absolute;
+                        top: -8px;
+                        right: -8px;
+                        background-color: var(--secondary-color);
+                        color: white;
+                        border-radius: 50%;
+                        width: 20px;
+                        height: 20px;
+                        font-size: 12px;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                    }
+                `;
+                icon.shadowRoot.appendChild(style);
+                icon.shadowRoot.appendChild(countBadge);
+            } else if (cart.length === 0) {
+                countBadge.textContent = '';
+            } else {
+                icon.shadowRoot.querySelector('.cart-badge').textContent = cart.length;
+            }
+        });
+    }
+
+    // Función para añadir al carrito
+    function addToCart(product) {
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+        
+        // Verificar si el producto ya está en el carrito
+        const existingIndex = cart.findIndex(item => 
+            item.title === product.title && item.price === product.price);
+        
+        if (existingIndex === -1) {
+            cart.push(product);
+            localStorage.setItem('cart', JSON.stringify(cart));
+            console.log('Producto añadido:', product);
+        } else {
+            console.log('El producto ya está en el carrito');
+        }
+        
+        updateCartCount();
+    }
+
+    // Configurar botones "Añadir al carrito"
+    function setupCartButtons() {
+        const addToCartButtons = document.querySelectorAll('.product-button');
+        
+        addToCartButtons.forEach(button => {
+            // Remover event listeners existentes para evitar duplicados
+            button.replaceWith(button.cloneNode(true));
+        });
+        
+        document.querySelectorAll('.product-button').forEach(button => {
+            button.addEventListener('click', (e) => {
+                e.preventDefault();
+                const productCard = button.closest('.product-card');
+                const product = {
+                    title: productCard.querySelector('.product-title').textContent,
+                    price: productCard.querySelector('.product-price').textContent,
+                    image: productCard.querySelector('.product-image img').src
+                };
+                addToCart(product);
+            });
+        });
+    }
+
+    // Inicialización cuando el DOM esté listo
+    document.addEventListener('DOMContentLoaded', function() {
+        updateCartCount();
+        setupCartButtons();
+    });
+
+        // Menú hamburguesa
+        const menuToggle = document.getElementById('menuToggle');
+        const navMenu = document.getElementById('navMenu');
+        
+        menuToggle.addEventListener('click', () => {
+            navMenu.classList.toggle('active');
+        });
+        
+        // Carrusel automático
+        const carousel = document.getElementById('carousel');
+        const slides = document.querySelectorAll('.carousel-slide');
+        let currentSlide = 0;
+        
+        function nextSlide() {
+            currentSlide = (currentSlide + 1) % slides.length;
+            carousel.style.transform = `translateX(-${currentSlide * 100}%)`;
+        }
+        
+        // Cambiar slide cada 5 segundos
+        setInterval(nextSlide, 5000);
+        
+        // Banner de ofertas - duplicar contenido para scroll infinito
+        const offerText = document.querySelector('.offer-text');
+        offerText.innerHTML += ' ' + offerText.innerHTML;
+                    // Add click handlers for all "Add to Cart" buttons
+            const addToCartButtons = document.querySelectorAll('.product-button');
+            addToCartButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const productCard = button.closest('.product-card');
+                    const productTitle = productCard.querySelector('.product-title').innerText;
+                    const productPrice = productCard.querySelector('.product-price').innerText;
+                    // Create product object
+                    const product = {
+                        title: productTitle,
+                        price: productPrice
+                    };
+                    // Add product to cart
+                    addToCart(product);
+                });
+            });
+            // Example: Add click handler for promo banner close
+            const promoBanner = document.querySelector('sl-alert.promo-banner');
+            if (promoBanner) {
+                promoBanner.addEventListener('sl-after-hide', () => {
+                    console.log('Promo banner closed');
+                });
+            }
+    </script>
+</body>
+</html>
